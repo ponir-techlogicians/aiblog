@@ -36,11 +36,15 @@ def create_blog_posts(request):
         created_posts = []
         
         for item in data:
+            print(f"Processing item: {item}")
             content = item.get('content', '')
+            print(f"Extracted content: '{content}'")
             image_data = item.get('image', {}).get('data', {})
+            print(f"Extracted image_data: {image_data}")
             
             # Create blog post
             blog_post = BlogPost(content=content)
+            print(f"Created BlogPost with content: '{blog_post.content}'")
             
             # Handle image if present
             if image_data and 'data' in image_data:
