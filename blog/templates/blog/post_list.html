@@ -1,0 +1,142 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Blog Posts - AI Blog{% endblock %}
+
+{% block extra_css %}
+<style>
+    .posts-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .posts-count {
+        color: #666;
+        font-size: 1.1em;
+    }
+    
+    .posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+    }
+    
+    .post-card {
+        background: #f8f9fa;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .post-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .post-content {
+        padding: 20px;
+    }
+    
+    .post-text {
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .post-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+        font-size: 0.9em;
+        color: #888;
+    }
+    
+    .post-id {
+        font-weight: 600;
+        color: #667eea;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    
+    .empty-state-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .empty-state p {
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="posts-header">
+    <div>
+        <h2>📝 All Blog Posts</h2>
+        <p class="posts-count">{{ posts|length }} post{{ posts|length|pluralize }}</p>
+    </div>
+    <a href="{% url 'blog:api_test' %}" class="btn">➕ Create New Post</a>
+</div>
+
+{% if posts %}
+    <div class="posts-grid">
+        {% for post in posts %}
+        <div class="post-card">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Blog post image" class="post-image">
+            {% else %}
+                <div class="post-image"></div>
+            {% endif %}
+            
+            <div class="post-content">
+                <div class="post-text">{{ post.content }}</div>
+                
+                <a href="{% url 'blog:detail' post.pk %}" class="btn">Read More →</a>
+                
+                <div class="post-meta">
+                    <span class="post-id">ID: {{ post.id }}</span>
+                    <span>{{ post.created_at|date:"M d, Y" }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <h2>No Blog Posts Yet</h2>
+        <p>Create your first blog post using the /create endpoint</p>
+        <p><code>POST /create</code></p>
+    </div>
+{% endif %}
+{% endblock %}
+
