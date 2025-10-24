@@ -13,17 +13,25 @@ def create_blog_posts(request):
     """
     API endpoint to create blog posts from JSON payload
     POST /create
+    Accepts both a single object or an array of objects
     """
-    print(request.body)
+    print(f"Request body: {request.body}")
     if request.method != 'POST':
         return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
     
     try:
         data = json.loads(request.body)
-        print(data)
+        print(f"Parsed data: {data}")
+        print(f"Data type: {type(data)}")
         
-        if not isinstance(data, list):
-            return JsonResponse({'error': 'Payload must be an array'}, status=400)
+        # Convert single object to array for uniform processing
+        if isinstance(data, dict):
+            data = [data]
+        elif not isinstance(data, list):
+            return JsonResponse({
+                'error': 'Payload must be an object or an array of objects',
+                'received_type': str(type(data).__name__)
+            }, status=400)
         
         created_posts = []
         
