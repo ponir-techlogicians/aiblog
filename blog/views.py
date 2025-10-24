@@ -37,10 +37,21 @@ def create_blog_posts(request):
         
         for item in data:
             print(f"Processing item: {item}")
+            print(f"Item keys: {list(item.keys())}")
+            print(f"Item type: {type(item)}")
+            
+            # Try to get content from different possible locations
             content = item.get('content', '')
+            if not content:
+                # Check if content is nested somewhere else
+                content = item.get('CONTENT_TEXT', '')
+            if not content:
+                # Maybe it's in a text field
+                content = item.get('text', '')
+            
             print(f"Extracted content: '{content}'")
             image_data = item.get('image', {}).get('data', {})
-            print(f"Extracted image_data: {image_data}")
+            print(f"Image data keys: {list(image_data.keys()) if image_data else 'None'}")
             
             # Create blog post
             blog_post = BlogPost(content=content)

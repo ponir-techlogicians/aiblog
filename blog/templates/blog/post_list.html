@@ -118,7 +118,7 @@
             {% endif %}
             
             <div class="post-content">
-                <div class="post-text">{{ post.content }}</div>
+                <div class="post-text">{{ post.content|truncatewords:50|linebreaks }}</div>
                 
                 <a href="{% url 'blog:detail' post.pk %}" class="btn">Read More →</a>
                 

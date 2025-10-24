@@ -4,6 +4,7 @@ charset-normalizer==3.4.4
 Django==5.2.7
 idna==3.11
 lxml==6.0.2
+Markdown==3.9
 numpy==2.3.4
 pandas==2.3.3
 pillow==12.0.0
