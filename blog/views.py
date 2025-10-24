@@ -14,6 +14,7 @@ def create_blog_posts(request):
     API endpoint to create blog posts from JSON payload
     POST /create
     """
+    print(request.body)
     if request.method != 'POST':
         return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
     
