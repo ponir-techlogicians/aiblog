@@ -19,6 +19,7 @@ def create_blog_posts(request):
     
     try:
         data = json.loads(request.body)
+        print(data)
         
         if not isinstance(data, list):
             return JsonResponse({'error': 'Payload must be an array'}, status=400)
